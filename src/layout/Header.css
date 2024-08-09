@@ -1,0 +1,39 @@
+/* CSS for the Header component */
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("/src/assets/background.png");
+    background-size: cover;
+    background-position: center;
+
+    position: fixed;
+    top: 0px;
+    
+}
+
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.header-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-link {
+  font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header-link:hover {
+  text-decoration: underline;
+}

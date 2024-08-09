@@ -1,5 +1,6 @@
-import "./Header"
+import "./Header.css"
 import { Link } from "react-router-dom"
+
 type Params = {
     title: string;
     link: string;

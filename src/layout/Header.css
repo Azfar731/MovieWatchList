@@ -1,33 +1,38 @@
 /* CSS for the Header component */
 
+.header-container{
+  position: relative;
+  height: 30vh;
+  
+}
+
 header {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: absolute;
     top: 0px;
     width: 100%;
-    height: 30%;
+    height: 100%;
     z-index: 1;
     
-}
-
-
-header::before {    
-    content: "";
+  }
+  
+  header::after {    
     background-image: url("/src/assets/bg.png");
-    /* background-size: cover; */
+    content: "";
+    background-size: cover;
     background-size: 50%;
     background-position: 0 -250px;
-    position: fixed;
+    position: absolute;
     top: 0px;
     width: 100%;
-    height: 30%;
+    height: 100%;
     z-index: 0;
     opacity: 100%;
     filter: brightness(0.5)
     
-}
+} 
 
 
 .header-content {

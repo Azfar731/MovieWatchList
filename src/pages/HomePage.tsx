@@ -50,7 +50,7 @@ export default function HomePage<T>() {
         link="/watchlist"
         linkText="My Watchlist"
       />
-      <SearchBar />
+      
       {loaderData ? <MoviesList movieIds={getMovieIds()} /> : <PlaceHolder />}
     </>
   );

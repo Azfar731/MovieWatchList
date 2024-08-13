@@ -24,23 +24,26 @@ async function loader({ request }: LoaderFunctionArgs) {
 
 export default function HomePage<T>() {
   const [pageNumber, setPageNumber] = useState(1);
-  const loaderData = useLoaderData();
+  const loaderResponse = useLoaderData();
   const moviesPerPage = 3;
   // console.log(loaderData);
 
   const getMovieIds = () => {
-    if (loaderData.length >= pageNumber * moviesPerPage) {
-      const moviesForCurrentPage = loaderData.slice(
+    const { searchResults, totalResults } = loaderResponse;
+    let moviesForCurrentPage = [];
+    if (searchResults.length >= pageNumber * moviesPerPage) {
+      moviesForCurrentPage = searchResults.slice(
         (pageNumber - 1) * moviesPerPage,
         pageNumber * moviesPerPage
       );
-      const movieIds: string[] = moviesForCurrentPage.map((movie) => movie.imdbID);
-      return movieIds
     } else {
-      throw new Error(
-        "Error occurred in HomePage loader. Not enough movies in array"
-      );
+      moviesForCurrentPage = searchResults.slice(
+        (pageNumber - 1) * moviesPerPage);
     }
+    const movieIds: string[] = moviesForCurrentPage.map(
+      (movie) => movie.imdbID
+    );
+    return movieIds;
   };
 
   return (
@@ -50,8 +53,12 @@ export default function HomePage<T>() {
         link="/watchlist"
         linkText="My Watchlist"
       />
-      
-      {loaderData ? <MoviesList movieIds={getMovieIds()} /> : <PlaceHolder />}
+
+      {loaderResponse ? (
+        <MoviesList movieIds={getMovieIds()} />
+      ) : (
+        <PlaceHolder />
+      )}
     </>
   );
 }

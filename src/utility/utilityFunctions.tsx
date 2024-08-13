@@ -3,7 +3,8 @@ async function fetchData(movieName: string, apiKey: string) {
     const targetUrl = `${baseURL}?apikey=${apiKey}&s=${movieName}&type=movie`
     const response = await fetch(targetUrl)
     const data = await response.json() 
-    return data.Search
+    console.log(data)
+    return {searchResults: data.Search , totalResults: data.totalResults}
 }
 
 async function fetchMovieData(movieId: string,apiKey: string){

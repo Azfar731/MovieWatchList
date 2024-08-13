@@ -1,8 +1,12 @@
-import "./MoviesList.css"
+import "./MoviesList.css";
+import MovieCard from "./MovieCard";
 
+export default function MoviesList({ movieIds }: { movieIds: string[] }) {
+  console.log(movieIds);
 
+  const movieCardsHTML = movieIds.map((id) => {
+    return <MovieCard key={id} movieId={id} />;
+  });
 
-
-export default function MoviesList(){
-    return (<></>)
+  return <div className="movies-list-container">{movieCardsHTML}</div>;
 }

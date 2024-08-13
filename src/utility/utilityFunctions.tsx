@@ -6,5 +6,14 @@ async function fetchData(movieName: string, apiKey: string) {
     return data.Search
 }
 
+async function fetchMovieData(movieId: string,apiKey: string){
+    const baseURL = "http://www.omdbapi.com/"
+    const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=short`
+    const response = await fetch(targetUrl)
+    const data = await response.json() 
+    console.log(data)
+    return data
 
-export { fetchData };
+}
+
+export { fetchData, fetchMovieData };

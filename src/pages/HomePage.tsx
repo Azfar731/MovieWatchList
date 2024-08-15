@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext } from "react";
 import "./HomePage";
 import Header from "../layout/Header";
 import SearchBar from "../components/SearchBar";
@@ -6,10 +6,9 @@ import { fetchData } from "../utility/utilityFunctions";
 import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
 import MoviesList from "../components/MoviesList";
 import PlaceHolder from "../components/Placeholder";
-// import dotenv from "dotenv";
+import ButtonList from "../components/Button/ButtonList";
 
-// dotenv.config();
-
+const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
   const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
@@ -27,9 +26,11 @@ export default function HomePage<T>() {
   const loaderResponse = useLoaderData();
   const moviesPerPage = 3;
   // console.log(loaderData);
-
+  const managePageNumber = (value: number) => {
+    console.log("handle click funcction running, value: ", value);
+    setPageNumber(value);
+  };
   const getMovieIds = () => {
-    
     const { searchResults, totalResults } = loaderResponse;
     let moviesForCurrentPage = [];
     if (searchResults.length >= pageNumber * moviesPerPage) {
@@ -39,7 +40,8 @@ export default function HomePage<T>() {
       );
     } else {
       moviesForCurrentPage = searchResults.slice(
-        (pageNumber - 1) * moviesPerPage);
+        (pageNumber - 1) * moviesPerPage
+      );
     }
     const movieIds: string[] = moviesForCurrentPage.map(
       (movie) => movie.imdbID
@@ -56,17 +58,27 @@ export default function HomePage<T>() {
       />
 
       {loaderResponse && loaderResponse.response ? (
-        <MoviesList movieIds={getMovieIds()} />
+        <>
+          <PageButtonContext.Provider value={managePageNumber}>
+            <MoviesList movieIds={getMovieIds()} />
+            <ButtonList
+              totalResults={loaderResponse.totalResults}
+              resultsPerPage={moviesPerPage}
+              currentPage={pageNumber}
+            />
+          </PageButtonContext.Provider>
+        </>
       ) : (
         <PlaceHolder>
-          <h1>{loaderResponse?"No Movie found": "Type a Movie name to start searching"}</h1>
+          <h1>
+            {loaderResponse
+              ? "No Movie found"
+              : "Type a Movie name to start searching"}
+          </h1>
         </PlaceHolder>
       )}
     </>
   );
 }
 
-export { loader };
-
-
-
+export { loader, PageButtonContext };

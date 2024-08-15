@@ -1,11 +1,12 @@
-async function fetchData(movieName: string, apiKey: string) {
+async function fetchData(movieName: string, apiKey: string, pageNumber: number, moviesPerPage: number ) {
     const baseURL = "http://www.omdbapi.com/"
-    const targetUrl = `${baseURL}?apikey=${apiKey}&s=${movieName}&type=movie`
+    const pageToFetch = Math.ceil((pageNumber * moviesPerPage)/10)
+    const targetUrl = `${baseURL}?apikey=${apiKey}&s=${movieName}&type=movie&page=${pageToFetch}`
     const response = await fetch(targetUrl)
     const data = await response.json() 
     console.log(data)
     if(data.Response === "True"){
-    return {response: true , searchResults: data.Search , totalResults: data.totalResults}
+    return {response: true , moviesFetched: data.Search , totalResults: data.totalResults}
 }
 else{
     return {response: false, errorMessage: data.Error}
@@ -38,4 +39,15 @@ function setSearchParameters(paramsArray, setSearchParams){
 }
 
 
-export { fetchData, fetchMovieData, setSearchParameters };
+function getSearchParameters(url){
+  const searchParams = new URL(url).searchParams
+  const movieName = searchParams.get("movie");
+  const pageNumber = searchParams.get("pageNumber") || "1"
+  const loadData = searchParams.get("loadData") || "true"
+  const moviesPerPage = searchParams.get("moviesPerPage") || "5"
+  return {movieName, pageNumber, loadData, moviesPerPage}
+
+}
+
+
+export { fetchData, fetchMovieData, setSearchParameters, getSearchParameters };

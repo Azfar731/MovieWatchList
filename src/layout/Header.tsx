@@ -18,7 +18,6 @@ export default function Header({ title, link, linkText }: Params) {
           </Link>
         </div>
       </header>
-      <SearchBar />
     </div>
   );
 }

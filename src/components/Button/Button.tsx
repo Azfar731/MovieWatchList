@@ -2,10 +2,10 @@ import "./Button.css";
 import { PageButtonContext } from "../../pages/HomePage";
 import { useContext } from "react";
 
-export default function Button({ value }: { value: number }) {
+export default function Button({ value, text, ...rest }: { value: number, text: string, [key: string]: any }) {
     const managePageNumber = useContext(PageButtonContext)
 
     return (
-    <button className="page-btn" onClick={() => managePageNumber(value)}>{value}</button>
+    <button {...rest}  onClick={() => managePageNumber(value)}>{text}</button>
   )
 }

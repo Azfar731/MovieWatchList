@@ -22,4 +22,20 @@ async function fetchMovieData(movieId: string,apiKey: string){
 
 }
 
-export { fetchData, fetchMovieData };
+
+function setSearchParameters(paramsArray, setSearchParams){
+    setSearchParams(prev => {
+        paramsArray.forEach(element => {
+            if(element.value){
+                prev.set(element.key,element.value)
+            }else{
+                prev.delete(element.key)
+            }
+        });
+        return prev;
+    })
+
+}
+
+
+export { fetchData, fetchMovieData, setSearchParameters };

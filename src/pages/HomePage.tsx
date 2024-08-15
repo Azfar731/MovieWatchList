@@ -2,14 +2,15 @@ import { useState, createContext } from "react";
 import "./HomePage";
 import Header from "../layout/Header";
 import SearchBar from "../components/SearchBar";
-import { fetchData } from "../utility/utilityFunctions";
-import { useLoaderData, LoaderFunctionArgs } from "react-router-dom";
+import { fetchData, setSearchParameters } from "../utility/utilityFunctions";
+import { useLoaderData, LoaderFunctionArgs, useSearchParams } from "react-router-dom";
 import MoviesList from "../components/MoviesList";
 import PlaceHolder from "../components/Placeholder";
 import ButtonList from "../components/Button/ButtonList";
 
 const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
+  console.log("loader running")
   const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
     throw new Error("API key not found. Register on OMDB to get an API Key");
@@ -22,23 +23,30 @@ async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function HomePage<T>() {
-  const [pageNumber, setPageNumber] = useState(1);
-  const loaderResponse = useLoaderData();
+  const [searchParams, setSearchParams] = useSearchParams()
+  // const [pageNumber, setPageNumber] = useState(Number(searchParams.get("pageNumber"))|| 1);
+  const pageNumber = Number(searchParams.get("pageNumber"))|| 1
+  const loaderResponse = useLoaderData(); 
   const moviesPerPage = 3;
   // console.log(loaderData);
+    
+  
   const managePageNumber = (value: number) => {
     console.log("handle click funcction running, value: ", value);
     setPageNumber(value);
   };
   const getMovieIds = () => {
+
     const { searchResults, totalResults } = loaderResponse;
-    let moviesForCurrentPage = [];
+        let moviesForCurrentPage = [];
     if (searchResults.length >= pageNumber * moviesPerPage) {
+      //if there are sufficient movies to display on current page
       moviesForCurrentPage = searchResults.slice(
         (pageNumber - 1) * moviesPerPage,
         pageNumber * moviesPerPage
       );
     } else {
+      // if number of movies to display are lower than movies per page
       moviesForCurrentPage = searchResults.slice(
         (pageNumber - 1) * moviesPerPage
       );

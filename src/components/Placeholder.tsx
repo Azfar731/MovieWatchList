@@ -1,7 +1,7 @@
-import "./Placeholder.css"
+import "./Placeholder.css";
 
-
-
-export default function PlaceHolder(){
-    return(<></>)
+export default function PlaceHolder({ children }) {
+  return (<>
+    {children}
+  </>);
 }

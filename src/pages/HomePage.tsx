@@ -29,6 +29,7 @@ export default function HomePage<T>() {
   // console.log(loaderData);
 
   const getMovieIds = () => {
+    
     const { searchResults, totalResults } = loaderResponse;
     let moviesForCurrentPage = [];
     if (searchResults.length >= pageNumber * moviesPerPage) {
@@ -54,13 +55,18 @@ export default function HomePage<T>() {
         linkText="My Watchlist"
       />
 
-      {loaderResponse ? (
+      {loaderResponse && loaderResponse.response ? (
         <MoviesList movieIds={getMovieIds()} />
       ) : (
-        <PlaceHolder />
+        <PlaceHolder>
+          <h1>{loaderResponse?"No Movie found": "Type a Movie name to start searching"}</h1>
+        </PlaceHolder>
       )}
     </>
   );
 }
 
 export { loader };
+
+
+

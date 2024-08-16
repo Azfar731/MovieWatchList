@@ -148,10 +148,23 @@ export default function HomePage<T>() {
   };
 
 
+  const getPlaceholderValue = () =>{
+    if(!loaderResponse){
+      return <h1>Type a movie to get started</h1>
+    }else if(!loaderResponse.response){
+      return <h1>No movie found</h1>
+    }else{
+      return <h1>Loading Fetch results</h1>
+    }
+  }
+
+
   // checks if loader provided a response and it was not an error
   if(loaderResponse && loaderResponse.response){
   handleLoaderResponse()  
   }
+
+
 
   return (
     <>
@@ -174,11 +187,9 @@ export default function HomePage<T>() {
         </>
       ) : (
         <PlaceHolder>
-          <h1>
-            {loaderResponse
-              ? "No Movie found"
-              : "Type a Movie name to start searching"}
-          </h1>
+            {
+              getPlaceholderValue()
+            }
         </PlaceHolder>
       )}
     </>

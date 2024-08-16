@@ -1,2 +1,8 @@
-Handle the case when a movie isn't found.
-Implement button functionality for pages.
+
+Design button
+Desing a better layout for when movies are isLoading
+Provide a plaholder image, if movie image not available
+
+
+important:
+show a loading icon when search array is being fetched. Currently it defaults to no movies found

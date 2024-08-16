@@ -18,7 +18,7 @@ import ButtonList from "../components/Button/ButtonList";
 
 const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
-  console.log("loader running")
+  // console.log("loader running");
   const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
     throw new Error("API key not found. Register on OMDB to get an API Key");
@@ -26,12 +26,16 @@ async function loader({ request }: LoaderFunctionArgs) {
   const { movieName, pageNumber, loadData, moviesPerPage } =
     getSearchParameters(request.url);
 
-  
   if (movieName === null) {
     return false;
   }
   if (loadData === "true") {
-    return await fetchData(movieName, apiKey, Number(pageNumber),Number(moviesPerPage));
+    return await fetchData(
+      movieName,
+      apiKey,
+      Number(pageNumber),
+      Number(moviesPerPage)
+    );
   } else {
     return { response: true, moviesFetched: [], totalResults: 0 };
   }
@@ -40,24 +44,28 @@ async function loader({ request }: LoaderFunctionArgs) {
 export default function HomePage<T>() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [moviesArray, setMoviesArray] = useState([]);
-  const [totalSearchResults, setTotalSearchResults] = useState(0)
-  // const [pageNumber, setPageNumber] = useState(Number(searchParams.get("pageNumber"))|| 1);
+  const [totalSearchResults, setTotalSearchResults] = useState(0);
+  const [isloading, setIsLoading] = useState(true)
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 5;
-  const startIndex = Math.floor(((pageNumber-1) * moviesPerPage) / 10) * 10;
-  console.log("startIndex: ",startIndex)
+  const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
+  console.log("startIndex: ", startIndex);
   const loaderResponse = useLoaderData();
   // console.log(loaderData);
 
   const managePageNumber = (value: number) => {
-    const startIndexforNewPage = Math.floor(((value-1) * moviesPerPage) / 10) * 10;
+    const startIndexforNewPage =
+      Math.floor(((value - 1) * moviesPerPage) / 10) * 10;
 
-    console.log("handle click funcction running, value: ", value);
+    
+    setIsLoading(moviesArray[startIndexforNewPage] === undefined ? true : false)
+    
     const paramsArray = [
       { key: "pageNumber", value },
       {
         key: "loadData",
-        value: moviesArray[startIndexforNewPage] === undefined ? "true" : "false",
+        value:
+          moviesArray[startIndexforNewPage] === undefined ? "true" : "false",
       },
       { key: "moviesPerPage", value: moviesPerPage },
     ];
@@ -77,51 +85,68 @@ export default function HomePage<T>() {
     });
   };
 
-  const getMovieIds = () => {
+
+  const handleLoaderResponse = () => {
     const { moviesFetched, totalResults } = loaderResponse;
 
     //if loader fetched new data
     if (moviesFetched.length > 1) {
-
       //check whether movies Array has been initialized
       //if not, then initialize it to the length of totalResults
       //Each element contains undefined in the start
-      if (moviesArray.length < 1){
-        setTotalSearchResults(totalResults)
-        const newArray = new Array(Number(totalSearchResults))
-        newArray.fill(undefined)
+      if (moviesArray.length < 1) {
+        setTotalSearchResults(totalResults);
+        const newArray = new Array(Number(totalSearchResults));
+        newArray.fill(undefined);
         setMoviesArray(newArray);
       }
 
       if (moviesArray[startIndex] === undefined) {
         appendMovieSearchResults(moviesFetched);
+        setIsLoading(false) //new data has been fetched
       }
     }
+  }
 
-    //get movies for current page
-    let moviesForCurrentPage = [];
-    if (moviesArray.length >= pageNumber * moviesPerPage) {
-      //if there are sufficient movies to display on current page
-      moviesForCurrentPage = moviesArray.slice(
-        (pageNumber - 1) * moviesPerPage,
-        pageNumber * moviesPerPage
+
+
+
+  const getMovieIds = () => {
+
+    //only enter the block if atleast 1 movie exists for the current page
+    if (moviesArray[pageNumber - 1] !== undefined) {
+      //get movies for current page
+      let moviesForCurrentPage = [];
+      if (moviesArray.length >= pageNumber * moviesPerPage) {
+        //if there are sufficient movies to display on current page
+        moviesForCurrentPage = moviesArray.slice(
+          (pageNumber - 1) * moviesPerPage,
+          pageNumber * moviesPerPage
+        );
+      } else {
+        // if number of movies to display are lower than movies per page
+        moviesForCurrentPage = moviesArray.slice(
+          (pageNumber - 1) * moviesPerPage
+        );
+      }
+
+      const movieIds: string[] = moviesForCurrentPage.map(
+        (movie) => movie.imdbID
       );
-    } else {
-      // if number of movies to display are lower than movies per page
-      moviesForCurrentPage = moviesArray.slice(
-        (pageNumber - 1) * moviesPerPage
-      );
+      return movieIds;
     }
-    const movieIds: string[] = moviesForCurrentPage.map(
-      (movie) => movie.imdbID
-    );
-    return movieIds;
   };
-  
-  const handleFormSubmition = (e)=>{
-    e.preventDefault()
-    console.log(" \n form submition running \n ")
-    e.target.submit()
+
+  const handleFormSubmition = (e) => {
+    e.preventDefault();
+   
+    e.target.submit();
+  };
+
+
+  // checks if loader provided a response and it was not an error
+  if(loaderResponse && loaderResponse.response){
+  handleLoaderResponse()  
   }
 
   return (
@@ -132,7 +157,7 @@ export default function HomePage<T>() {
         linkText="My Watchlist"
       />
       <SearchBar handleSubmit={handleFormSubmition} />
-      {loaderResponse && loaderResponse.response ? (
+      {!isloading ? (
         <>
           <PageButtonContext.Provider value={managePageNumber}>
             <MoviesList movieIds={getMovieIds()} />

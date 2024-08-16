@@ -18,7 +18,7 @@ async function fetchMovieData(movieId: string,apiKey: string){
     const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=short`
     const response = await fetch(targetUrl)
     const data = await response.json() 
-    console.log(data)
+    // console.log(data)
     return data
 
 }

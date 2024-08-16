@@ -1,7 +1,7 @@
 import "./ButtonList.css";
 import Button from "./Button";
 
-export default function ButtonList({
+export  default  function ButtonList({
   totalResults,
   resultsPerPage,
   currentPage = 1,
@@ -28,9 +28,9 @@ export default function ButtonList({
     lastButton = currentPage + 2;
   }
 
-  console.log(
-    `firstButton: ${firstButton} \n lastButton: ${lastButton} \n maxPages=${maxPages} \n currentPage = ${currentPage}`
-  );
+  // console.log(
+  //   `firstButton: ${firstButton} \n lastButton: ${lastButton} \n maxPages=${maxPages} \n currentPage = ${currentPage}`
+  // );
   for (let i = firstButton; i <= lastButton; i++) {
     buttonElements.push(
       <Button key={i} value={i} text={i.toString()} className={`page-btn ${i == currentPage && `page-btn-active`}`} />

@@ -6,7 +6,7 @@ async function fetchData(movieName: string, apiKey: string, pageNumber: number, 
     const data = await response.json() 
     console.log(data)
     if(data.Response === "True"){
-    return {response: true , moviesFetched: data.Search , totalResults: data.totalResults}
+    return {response: true , moviesFetched: data.Search , totalResults: data.totalResults, pageFetched: pageToFetch}
 }
 else{
     return {response: false, errorMessage: data.Error}

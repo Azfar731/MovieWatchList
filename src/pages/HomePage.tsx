@@ -37,7 +37,8 @@ async function loader({ request }: LoaderFunctionArgs) {
       Number(moviesPerPage)
     );
   } else {
-    return { response: true, moviesFetched: [], totalResults: 0 };
+    const previousPageFetched = Math.ceil((Number(pageNumber) * Number(moviesPerPage))/10)
+    return { response: true, moviesFetched: [], totalResults: 0, pageFetched: previousPageFetched  };
   }
 }
 
@@ -45,11 +46,11 @@ export default function HomePage<T>() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [moviesArray, setMoviesArray] = useState([]);
   const [totalSearchResults, setTotalSearchResults] = useState(0);
-  const [isloading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 5;
-  const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
-  console.log("startIndex: ", startIndex);
+  // const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
+  // console.log("startIndex: ", startIndex);
   const loaderResponse = useLoaderData();
   // console.log(loaderData);
 
@@ -72,8 +73,10 @@ export default function HomePage<T>() {
     setSearchParameters(paramsArray, setSearchParams);
   };
 
-  const appendMovieSearchResults = (moviesToAppend) => {
+  const appendMovieSearchResults = (moviesToAppend,startIndex) => {
+
     setMoviesArray((prev) => {
+      // const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
       return prev.map((elem, index) => {
         //insert the fetched results into their specific position in the array
         if (index >= startIndex && index < startIndex + moviesToAppend.length) {
@@ -87,7 +90,7 @@ export default function HomePage<T>() {
 
 
   const handleLoaderResponse = () => {
-    const { moviesFetched, totalResults } = loaderResponse;
+    const { moviesFetched, totalResults, pageFetched } = loaderResponse;
 
     //if loader fetched new data
     if (moviesFetched.length > 1) {
@@ -100,9 +103,10 @@ export default function HomePage<T>() {
         newArray.fill(undefined);
         setMoviesArray(newArray);
       }
-
-      if (moviesArray[startIndex] === undefined) {
-        appendMovieSearchResults(moviesFetched);
+      
+      const startIndexForPageFetched = (pageFetched-1)*10
+      if (moviesArray[startIndexForPageFetched] === undefined ) {
+        appendMovieSearchResults(moviesFetched,startIndexForPageFetched);
         setIsLoading(false) //new data has been fetched
       }
     }
@@ -114,7 +118,7 @@ export default function HomePage<T>() {
   const getMovieIds = () => {
 
     //only enter the block if atleast 1 movie exists for the current page
-    if (moviesArray[pageNumber - 1] !== undefined) {
+    if (moviesArray[(pageNumber - 1)*moviesPerPage] !== undefined) {
       //get movies for current page
       let moviesForCurrentPage = [];
       if (moviesArray.length >= pageNumber * moviesPerPage) {
@@ -157,7 +161,7 @@ export default function HomePage<T>() {
         linkText="My Watchlist"
       />
       <SearchBar handleSubmit={handleFormSubmition} />
-      {!isloading ? (
+      {!isLoading ? (
         <>
           <PageButtonContext.Provider value={managePageNumber}>
             <MoviesList movieIds={getMovieIds()} />

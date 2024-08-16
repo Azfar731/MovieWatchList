@@ -6,3 +6,8 @@ Provide a plaholder image, if movie image not available
 
 important:
 show a loading icon when search array is being fetched. Currently it defaults to no movies found
+
+
+
+for later:
+Issue: If reload is pressed while loadData is set to false in the search params, the page gets stuck on loading data. 

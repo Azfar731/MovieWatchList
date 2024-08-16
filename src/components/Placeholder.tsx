@@ -2,6 +2,8 @@ import "./Placeholder.css";
 
 export default function PlaceHolder({ children }) {
   return (<>
-    {children}
+    <div className="placeholder-container">
+      {children}
+    </div>
   </>);
 }

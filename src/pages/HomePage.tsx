@@ -1,5 +1,5 @@
 import { useState, createContext } from "react";
-import "./HomePage";
+import "./HomePage.css";
 import Header from "../layout/Header";
 import SearchBar from "../components/SearchBar";
 import {
@@ -15,6 +15,8 @@ import {
 import MoviesList from "../components/MoviesList";
 import PlaceHolder from "../components/Placeholder";
 import ButtonList from "../components/Button/ButtonList";
+import { PiFilmReelFill } from "react-icons/pi";
+import { TbDatabaseSearch } from "react-icons/tb";
 
 const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
@@ -37,8 +39,15 @@ async function loader({ request }: LoaderFunctionArgs) {
       Number(moviesPerPage)
     );
   } else {
-    const previousPageFetched = Math.ceil((Number(pageNumber) * Number(moviesPerPage))/10)
-    return { response: true, moviesFetched: [], totalResults: 0, pageFetched: previousPageFetched  };
+    const previousPageFetched = Math.ceil(
+      (Number(pageNumber) * Number(moviesPerPage)) / 10
+    );
+    return {
+      response: true,
+      moviesFetched: [],
+      totalResults: 0,
+      pageFetched: previousPageFetched,
+    };
   }
 }
 
@@ -46,7 +55,7 @@ export default function HomePage<T>() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [moviesArray, setMoviesArray] = useState([]);
   const [totalSearchResults, setTotalSearchResults] = useState(0);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 5;
   // const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
@@ -58,9 +67,10 @@ export default function HomePage<T>() {
     const startIndexforNewPage =
       Math.floor(((value - 1) * moviesPerPage) / 10) * 10;
 
-    
-    setIsLoading(moviesArray[startIndexforNewPage] === undefined ? true : false)
-    
+    setIsLoading(
+      moviesArray[startIndexforNewPage] === undefined ? true : false
+    );
+
     const paramsArray = [
       { key: "pageNumber", value },
       {
@@ -73,8 +83,7 @@ export default function HomePage<T>() {
     setSearchParameters(paramsArray, setSearchParams);
   };
 
-  const appendMovieSearchResults = (moviesToAppend,startIndex) => {
-
+  const appendMovieSearchResults = (moviesToAppend, startIndex) => {
     setMoviesArray((prev) => {
       // const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
       return prev.map((elem, index) => {
@@ -87,7 +96,6 @@ export default function HomePage<T>() {
       });
     });
   };
-
 
   const handleLoaderResponse = () => {
     const { moviesFetched, totalResults, pageFetched } = loaderResponse;
@@ -103,22 +111,18 @@ export default function HomePage<T>() {
         newArray.fill(undefined);
         setMoviesArray(newArray);
       }
-      
-      const startIndexForPageFetched = (pageFetched-1)*10
-      if (moviesArray[startIndexForPageFetched] === undefined ) {
-        appendMovieSearchResults(moviesFetched,startIndexForPageFetched);
-        setIsLoading(false) //new data has been fetched
+
+      const startIndexForPageFetched = (pageFetched - 1) * 10;
+      if (moviesArray[startIndexForPageFetched] === undefined) {
+        appendMovieSearchResults(moviesFetched, startIndexForPageFetched);
+        setIsLoading(false); //new data has been fetched
       }
     }
-  }
-
-
-
+  };
 
   const getMovieIds = () => {
-
     //only enter the block if atleast 1 movie exists for the current page
-    if (moviesArray[(pageNumber - 1)*moviesPerPage] !== undefined) {
+    if (moviesArray[(pageNumber - 1) * moviesPerPage] !== undefined) {
       //get movies for current page
       let moviesForCurrentPage = [];
       if (moviesArray.length >= pageNumber * moviesPerPage) {
@@ -143,28 +147,35 @@ export default function HomePage<T>() {
 
   const handleFormSubmition = (e) => {
     e.preventDefault();
-   
+
     e.target.submit();
   };
 
-
-  const getPlaceholderValue = () =>{
-    if(!loaderResponse){
-      return <h1>Type a movie to get started</h1>
-    }else if(!loaderResponse.response){
-      return <h1>No movie found</h1>
-    }else{
-      return <h1>Loading Fetch results</h1>
+  const getPlaceholderValue = () => {
+    if (!loaderResponse) {
+      return (
+        <div className="flex-column-container">
+          <PiFilmReelFill className="icon" />
+          <h1>Start Exploring</h1>
+        </div>
+      );
+    } else if (!loaderResponse.response) {
+      return (
+        <div className="flex-column-container">
+          <TbDatabaseSearch className="icon"/>
+          <h1>Unable to find what you are looking for</h1>
+          <h1>Try another keyword</h1>)
+        </div>
+      );
+    } else {
+      return <h1>Loading Fetch results</h1>;
     }
-  }
-
+  };
 
   // checks if loader provided a response and it was not an error
-  if(loaderResponse && loaderResponse.response){
-  handleLoaderResponse()  
+  if (loaderResponse && loaderResponse.response) {
+    handleLoaderResponse();
   }
-
-
 
   return (
     <>
@@ -186,11 +197,7 @@ export default function HomePage<T>() {
           </PageButtonContext.Provider>
         </>
       ) : (
-        <PlaceHolder>
-            {
-              getPlaceholderValue()
-            }
-        </PlaceHolder>
+        <PlaceHolder>{getPlaceholderValue()}</PlaceHolder>
       )}
     </>
   );

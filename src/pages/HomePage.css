@@ -1,0 +1,14 @@
+.icon{
+    width: 5rem;
+    height: 5rem;
+}
+
+.flex-column-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 50%; 
+    text-align: center;
+    
+}

@@ -7,6 +7,7 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
+import ErrorElement from "./ErrorPage/ErrorElement";
 function App() {
   const browserRouter = createBrowserRouter(
     createRoutesFromElements(
@@ -16,8 +17,10 @@ function App() {
             index
             element={<HomePage />}
             loader={HomePageLoader}
+            errorElement={<ErrorElement  width="100%" height="90vh" backgroundColor="whitesmoke"/>}
           />
           <Route path="/watchlist" element={<WatchList />} />
+          
         </Route>
       </>
     )

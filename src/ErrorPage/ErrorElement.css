@@ -1,0 +1,53 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("./assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/fonts/Poppins/Poppins-Bold.ttf")
+    format("truetype");
+}
+
+
+.error-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 1rem;
+}
+
+.xl-font {
+  font-size: 12rem;
+  font-family: "Poppins", sans-serif !important;
+  padding-top: 1rem;
+  background: url("./assets/starry-sky3.jpg") no-repeat center center;
+  background-size: cover;
+  background-clip: text;
+  color: transparent;
+}
+
+.error-heading {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.error-body {
+  width: 30%;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 200;
+}
+
+.error-btn {
+  text-decoration: none;
+  background-color: #0145d4;
+  color: white;
+  border-radius: 25px;
+  padding: 1em 2em;
+}

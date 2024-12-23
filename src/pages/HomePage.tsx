@@ -21,7 +21,8 @@ import { TbDatabaseSearch } from "react-icons/tb";
 const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
   console.log(request.mode);
-  const apiKey = import.meta.env.VITE_API_KEY;
+  // const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = "dd2dead5";
   if (!apiKey) {
     throw new Error("API key not found. Register on OMDB to get an API Key");
   }
@@ -166,20 +167,18 @@ export default function HomePage() {
       );
     } else {
       const loadData = searchParams.get("loadData");
-      console.log("load Data value",loadData)
+      console.log("load Data value", loadData);
       if (loadData === "false") {
-      
         const paramsArray = [
           {
             key: "loadData",
             value: "true",
-          }
+          },
         ];
         // setSearchParameters(paramsArray, setSearchParams);
-
       }
       const loadData2 = searchParams.get("loadData");
-      return <h1>Loading  results</h1>;
+      return <h1>Loading results</h1>;
     }
   };
 

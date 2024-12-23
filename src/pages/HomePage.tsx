@@ -20,7 +20,7 @@ import { TbDatabaseSearch } from "react-icons/tb";
 
 const PageButtonContext = createContext();
 async function loader({ request }: LoaderFunctionArgs) {
-  // console.log("loader running");
+  console.log(request.mode);
   const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
     throw new Error("API key not found. Register on OMDB to get an API Key");
@@ -51,17 +51,14 @@ async function loader({ request }: LoaderFunctionArgs) {
   }
 }
 
-export default function HomePage<T>() {
+export default function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [moviesArray, setMoviesArray] = useState([]);
   const [totalSearchResults, setTotalSearchResults] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 5;
-  // const startIndex = Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
-  // console.log("startIndex: ", startIndex);
   const loaderResponse = useLoaderData();
-  // console.log(loaderData);
 
   const managePageNumber = (value: number) => {
     const startIndexforNewPage =
@@ -162,13 +159,27 @@ export default function HomePage<T>() {
     } else if (!loaderResponse.response) {
       return (
         <div className="flex-column-container">
-          <TbDatabaseSearch className="icon"/>
+          <TbDatabaseSearch className="icon" />
           <h1>Unable to find what you are looking for</h1>
           <h1>Try another keyword</h1>)
         </div>
       );
     } else {
-      return <h1>Loading Fetch results</h1>;
+      const loadData = searchParams.get("loadData");
+      console.log("load Data value",loadData)
+      if (loadData === "false") {
+      
+        const paramsArray = [
+          {
+            key: "loadData",
+            value: "true",
+          }
+        ];
+        // setSearchParameters(paramsArray, setSearchParams);
+
+      }
+      const loadData2 = searchParams.get("loadData");
+      return <h1>Loading  results</h1>;
     }
   };
 

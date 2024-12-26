@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import "./HomePage.css";
 import Header from "../layout/Header";
 import SearchBar from "../components/SearchBar";
@@ -17,7 +17,7 @@ import PlaceHolder from "../components/Placeholder";
 import ButtonList from "../components/Button/ButtonList";
 import { PiFilmReelFill } from "react-icons/pi";
 import { TbDatabaseSearch } from "react-icons/tb";
-
+import { useNavigation } from "react-router-dom";
 export const PageButtonContext = createContext();
 export async function loader({ request }: LoaderFunctionArgs) {
   console.log(request.mode);
@@ -45,6 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
     return {
       response: true,
+      searchTitle: movieName,
       moviesFetched: [],
       totalResults: 0,
       pageFetched: previousPageFetched,
@@ -60,6 +61,29 @@ export default function HomePage() {
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 10;
   const loaderResponse = useLoaderData();
+  const navigation = useNavigation();
+  const movie = searchParams.get("movie");
+  const [movieName, setMovieName] = useState(movie)
+  if(movieName !== movie){
+    setMovieName(movie)
+  }
+  useEffect(() => {
+    setMoviesArray([]);
+  }, [movieName]);
+
+
+  const isReloading =
+    navigation.state === "loading" &&
+    navigation.formData != null &&
+    navigation.formAction ===
+      navigation.location.pathname + navigation.location.search;
+
+  // Are we redirecting after an action?
+  const isRedirecting =
+    navigation.state === "loading" &&
+    navigation.formData != null &&
+    navigation.formAction !==
+      navigation.location.pathname + navigation.location.search;
 
   const calculateStartIndex = (
     pageNumber: number,
@@ -160,12 +184,7 @@ export default function HomePage() {
     }
   };
 
-  const handleFormSubmition = (e) => {
-    e.preventDefault();
-
-    e.target.submit();
-  };
-
+ 
   const getPlaceholderValue = () => {
     if (!loaderResponse) {
       return (
@@ -179,7 +198,7 @@ export default function HomePage() {
         <div className="flex-column-container">
           <TbDatabaseSearch className="icon" />
           <h1>Unable to find what you are looking for</h1>
-          <h1>Try another keyword</h1>)
+          <h1>Try another keyword</h1>
         </div>
       );
     } else {

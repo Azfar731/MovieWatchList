@@ -31,9 +31,16 @@ async function fetchData(
         moviesFetched: data.Search,
         totalResults: data.totalResults,
         pageFetched: pageToFetch,
+        searchTitle: movieName,
       };
     } else {
-      return { response: false, errorMessage: data.Error };
+     return {
+      response: false,
+      moviesFetched: [],
+      totalResults: 0,
+      pageFetched: pageToFetch,
+      searchTitle: movieName,
+     }
     }
   } catch (err) {
     if (err instanceof Error) {
@@ -72,7 +79,7 @@ function getSearchParameters(url: string) {
   const movieName = searchParams.get("movie");
   const pageNumber = searchParams.get("pageNumber") || "1";
   const loadData = searchParams.get("loadData") || "true";
-  const moviesPerPage = searchParams.get("moviesPerPage") || "5";
+  const moviesPerPage = searchParams.get("moviesPerPage") || "10";
   return { movieName, pageNumber, loadData, moviesPerPage };
 }
 

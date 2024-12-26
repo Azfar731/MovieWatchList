@@ -61,23 +61,40 @@ export default function HomePage() {
   const moviesPerPage = 10;
   const loaderResponse = useLoaderData();
 
-  const managePageNumber = (value: number) => {
-    const startIndexforNewPage =
-      Math.floor(((value - 1) * moviesPerPage) / 10) * 10;
+  const calculateStartIndex = (
+    pageNumber: number,
+    moviesPerPage: number
+  ): number => {
+    return Math.floor(((pageNumber - 1) * moviesPerPage) / 10) * 10;
+  };
 
-    setIsLoading(
-      moviesArray[startIndexforNewPage] === undefined ? true : false
-    );
+  const shouldLoadData = (startIndex: number, moviesArray: any[]): boolean => {
+    return moviesArray[startIndex] === undefined;
+  };
 
-    const paramsArray = [
-      { key: "pageNumber", value },
-      {
-        key: "loadData",
-        value:
-          moviesArray[startIndexforNewPage] === undefined ? "true" : "false",
-      },
+  const generateSearchParameters = (
+    pageNumber: number,
+    moviesPerPage: number,
+    loadData: boolean
+  ): { key: string; value: string | number }[] => {
+    return [
+      { key: "pageNumber", value: pageNumber },
+      { key: "loadData", value: loadData ? "true" : "false" },
       { key: "moviesPerPage", value: moviesPerPage },
     ];
+  };
+
+  const loadPage = (value: number): void => {
+    const startIndex = calculateStartIndex(value, moviesPerPage);
+    const loadData = shouldLoadData(startIndex, moviesArray);
+
+    setIsLoading(loadData);
+
+    const paramsArray = generateSearchParameters(
+      value,
+      moviesPerPage,
+      loadData
+    );
     setSearchParameters(paramsArray, setSearchParams);
   };
 
@@ -194,10 +211,10 @@ export default function HomePage() {
         link="/watchlist"
         linkText="My Watchlist"
       />
-      <SearchBar handleSubmit={handleFormSubmition} />
+      <SearchBar />
       {!isLoading ? (
         <>
-          <PageButtonContext.Provider value={managePageNumber}>
+          <PageButtonContext.Provider value={loadPage}>
             <MoviesList movieIds={getMovieIds()} />
             <ButtonList
               totalResults={totalSearchResults}

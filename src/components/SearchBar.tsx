@@ -1,12 +1,9 @@
 import "./SearchBar.css";
 import { Form } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
-export default function SearchBar({handleSubmit}) {
-  
-  
-  
+export default function SearchBar() {
   return (
-    <Form className="search-box" onSubmit={handleSubmit}>
+    <Form className="search-box">
       <div className="input-container">
         <IoSearchSharp className="search-icon" />
         <input

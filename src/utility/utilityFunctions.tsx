@@ -36,11 +36,13 @@ async function fetchData(
       return { response: false, errorMessage: data.Error };
     }
   } catch (err) {
-    throw {
-      msg: err.message,
-      status: 700,
-      manual: true,
-    };
+    if (err instanceof Error) {
+      throw {
+        msg: err.message,
+        status: 700,
+        manual: true,
+      };
+    }
   }
 }
 
@@ -49,7 +51,6 @@ async function fetchMovieData(movieId: string, apiKey: string) {
   const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=short`;
   const response = await fetch(targetUrl);
   const data = await response.json();
-  // console.log(data)
   return data;
 }
 
@@ -66,7 +67,7 @@ function setSearchParameters(paramsArray, setSearchParams) {
   });
 }
 
-function getSearchParameters(url) {
+function getSearchParameters(url: string) {
   const searchParams = new URL(url).searchParams;
   const movieName = searchParams.get("movie");
   const pageNumber = searchParams.get("pageNumber") || "1";

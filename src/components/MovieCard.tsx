@@ -3,18 +3,30 @@ import { useEffect, useState } from "react";
 import { fetchMovieData } from "../utility/utilityFunctions";
 import ImagePlaceholder from "./ImagePlaceholder";
 import { FaStar } from "react-icons/fa6";
-import { FaStarHalf } from "react-icons/fa6";
+// import { FaStarHalf } from "react-icons/fa6";
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { ThreeDots } from "react-loading-icons";
-import { watch } from "fs";
+
+type MovieDetails = {
+  Title: string;
+  Poster: string;
+  imdbRating: string;
+  Runtime: string;
+  Genre: string;
+  Plot: string;
+  imdbID: string;
+} & Record<string, string>;
+
 export default function MovieCard({ movieId }: { movieId: string }) {
-  const [movieDetails, setMovieDetails] = useState(undefined);
- 
+  const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
+    undefined
+  );
+
   useEffect(() => {
     const apiKey = import.meta.env.VITE_API_KEY;
     // setMovieDetails(fetchMovieData(movieId,apiKey));
     fetchMovieData(movieId, apiKey).then((data) => setMovieDetails(data));
-  }, []);
+  }, [movieId]);
 
   function manageWatchlist(): void {
     if (!movieDetails) {
@@ -28,18 +40,19 @@ export default function MovieCard({ movieId }: { movieId: string }) {
 
     if (watchlistString) {
       watchlistArray = JSON.parse(watchlistString);
-      //case for removal 
+      //case for removal
       if (watchlistArray.includes(movieDetails.imdbID)) {
-       const newWatchListArray =  watchlistArray.filter(movieId => movieId !== movieDetails.imdbID)
-        localStorage.setItem("watchlist", JSON.stringify(newWatchListArray)); 
-        return  
+        const newWatchListArray = watchlistArray.filter(
+          (movieId) => movieId !== movieDetails.imdbID
+        );
+        localStorage.setItem("watchlist", JSON.stringify(newWatchListArray));
+        return;
       }
     }
-    
+
     //case for addition
     watchlistArray.push(movieDetails.imdbID);
     localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
-    
   }
 
   function inWatchList() {
@@ -67,11 +80,6 @@ export default function MovieCard({ movieId }: { movieId: string }) {
         placeholder="/placeholder.png"
         className="movie-poster"
       />
-      {/* <img
-        className="movie-poster"
-        src={movieDetails.Poster}
-        alt="Blade Runner"
-      /> */}
       <div className="movie-info">
         <div className="movie-title-container">
           <h3 className="movie-title">{movieDetails.Title}</h3>
@@ -84,8 +92,11 @@ export default function MovieCard({ movieId }: { movieId: string }) {
           <span className="movie-duration">{movieDetails.Runtime}</span>
           <span className="movie-genre">{movieDetails.Genre}</span>
           <div className="watchlist" onClick={manageWatchlist}>
-            { inWatchList() ? (<FaPlusCircle className="add-icon" />) : <FaMinusCircle className="add-icon"/> }
-            
+            {inWatchList() ? (
+              <FaPlusCircle className="add-icon" />
+            ) : (
+              <FaMinusCircle className="add-icon" />
+            )}
           </div>
         </div>
         <p className="movie-description">{movieDetails.Plot}</p>

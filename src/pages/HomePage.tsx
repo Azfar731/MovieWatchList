@@ -18,8 +18,8 @@ import ButtonList from "../components/Button/ButtonList";
 import { PiFilmReelFill } from "react-icons/pi";
 import { TbDatabaseSearch } from "react-icons/tb";
 
-const PageButtonContext = createContext();
-async function loader({ request }: LoaderFunctionArgs) {
+export const PageButtonContext = createContext();
+export async function loader({ request }: LoaderFunctionArgs) {
   console.log(request.mode);
   // const apiKey = import.meta.env.VITE_API_KEY;
   const apiKey = "dd2dead5";
@@ -58,7 +58,7 @@ export default function HomePage() {
   const [totalSearchResults, setTotalSearchResults] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
-  const moviesPerPage = 5;
+  const moviesPerPage = 10;
   const loaderResponse = useLoaderData();
 
   const managePageNumber = (value: number) => {
@@ -212,5 +212,3 @@ export default function HomePage() {
     </>
   );
 }
-
-export { loader, PageButtonContext };

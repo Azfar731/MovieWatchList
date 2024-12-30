@@ -1,15 +1,18 @@
-
-
-start from useLoaderData in SearchResults
+Current State:
+UseSearchResult is working fine.
+New Movies are being loaded if searched.
+Buttons are working
+Movies already in the array are not being displayed
+Loading Data prompt is not being displayed when a new page is fetched.
 
 next:
 re-render movie card when a movie is added/removed from watchlist.
 complete wishlist functionality
-fix entire page reloading when a get request is made. 
+fix entire page reloading when a get request is made.
 construct a card for a single movie.
 add a footer to the project
 find a good cover for the header
 fix API key/ENV variablel issue in the project
 
 for later:
-Issue: If reload is pressed while loadData is set to false in the search params, the page gets stuck on loading data. 
+Issue: If reload is pressed while loadData is set to false in the search params, the page gets stuck on loading data.

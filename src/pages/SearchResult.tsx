@@ -110,8 +110,8 @@ export default function SearchResult() {
     return moviesArray[startIndex] === undefined;
   };
 
-  const loadPage = (value: number): void => {
-    const startIndex = calculateStartIndex(value, moviesPerPage);
+  const loadPage = (pageNumber: number): void => {
+    const startIndex = calculateStartIndex(pageNumber, moviesPerPage);
     const loadData = shouldLoadData(startIndex, moviesArray);
 
     // setIsLoading(loadData); //replace with useNavigation

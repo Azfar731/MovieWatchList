@@ -1,5 +1,5 @@
 import "./Button.css";
-import { PageButtonContext } from "../../pages/HomePage";
+import { PageButtonContext } from "../../pages/SearchResult";
 import { useContext } from "react";
 
 type Params = {

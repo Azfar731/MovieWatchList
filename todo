@@ -1,4 +1,7 @@
 
+
+start from useLoaderData in SearchResults
+
 next:
 re-render movie card when a movie is added/removed from watchlist.
 complete wishlist functionality

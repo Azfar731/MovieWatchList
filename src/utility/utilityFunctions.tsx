@@ -1,12 +1,17 @@
-async function fetchData(
-  movieName: string,
-  apiKey: string,
-  pageNumber: number,
-  moviesPerPage: number
-) {
+async function fetchData({
+ searchTitle,
+  apiKey,
+  pageNumber,
+  moviesPerPage,
+}: {
+  searchTitle: string;
+  apiKey: string;
+  pageNumber: number;
+  moviesPerPage: number;
+}) {
   const baseURL = "https://www.omdbapi.com/";
   const pageToFetch = Math.ceil((pageNumber * moviesPerPage) / 10);
-  const targetUrl = `${baseURL}?apikey=${apiKey}&s=${movieName}&type=movie&page=${pageToFetch}`;
+  const targetUrl = `${baseURL}?apikey=${apiKey}&s=${searchTitle}&type=movie&page=${pageToFetch}`;
   try {
     const response = await fetch(targetUrl);
     if (!response.ok) {
@@ -17,7 +22,7 @@ async function fetchData(
       };
     }
     const data = await response.json();
-    console.log(data);
+    
     if (data.code === 400) {
       throw {
         msg: "API RETURNED AN ERROR ",
@@ -31,25 +36,25 @@ async function fetchData(
         moviesFetched: data.Search,
         totalResults: data.totalResults,
         pageFetched: pageToFetch,
-        searchTitle: movieName,
+        searchTitle,
       };
     } else {
-     return {
-      response: false,
-      moviesFetched: [],
-      totalResults: 0,
-      pageFetched: pageToFetch,
-      searchTitle: movieName,
-     }
+      return {
+        response: false,
+        moviesFetched: [],
+        totalResults: 0,
+        pageFetched: pageToFetch,
+        searchTitle,
+      };
     }
   } catch (err) {
     if (err instanceof Error) {
-      throw {
-        msg: err.message,
-        status: 700,
-        manual: true,
-      };
-    }
+        throw {
+          msg: err.message,
+          status: 500,
+          manual: true,
+        };
+      }
   }
 }
 
@@ -76,11 +81,11 @@ function setSearchParameters(paramsArray, setSearchParams) {
 
 function getSearchParameters(url: string) {
   const searchParams = new URL(url).searchParams;
-  const movieName = searchParams.get("movie");
   const pageNumber = searchParams.get("pageNumber") || "1";
   const loadData = searchParams.get("loadData") || "true";
   const moviesPerPage = searchParams.get("moviesPerPage") || "10";
-  return { movieName, pageNumber, loadData, moviesPerPage };
+
+  return { pageNumber, loadData, moviesPerPage };
 }
 
 export { fetchData, fetchMovieData, setSearchParameters, getSearchParameters };

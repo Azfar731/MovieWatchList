@@ -117,9 +117,9 @@ export default function SearchResult() {
     // setIsLoading(loadData); //replace with useNavigation
 
     const paramsArray = [
-      { key: "pageNumber", value: pageNumber },
+      { key: "pageNumber", value: pageNumber.toString() },
       { key: "loadData", value: loadData ? "true" : "false" },
-      { key: "moviesPerPage", value: moviesPerPage },
+      { key: "moviesPerPage", value: moviesPerPage.toString() },
     ];
 
     setSearchParameters(paramsArray, setSearchParams);
@@ -187,11 +187,16 @@ export default function SearchResult() {
 
 
   useEffect(() => {
+    //loader returns totalResults as 0 when it doesn't fetchdata. So, we need to handle that case
+    //The case when no movies are found, is handled in the getPlaceholderValue function
+    if(totalResults === 0) {
+      return
+    }
     totalSearchResults.current = totalResults;
     const newArray = new Array(Number(totalSearchResults.current));
     newArray.fill(undefined);
     setMoviesArray(newArray);
-  }, [searchTitle]);
+  }, [searchTitle, totalResults]);
 
 
 
@@ -212,6 +217,7 @@ export default function SearchResult() {
         if (moviesArray[startIndexForPageFetched] === undefined) {
           //handle the case when no movies returned and array is also empty
           console.log("NO movies returned and array is also empty");
+          setSearchParameters([{ key: "loadData", value: "true"}], setSearchParams);
         }
       }
     }
@@ -222,12 +228,13 @@ export default function SearchResult() {
     totalResults,
     pageFetched,
     moviesArray,
+    setSearchParams,
   ]);
 
  
   return (
     <>
-      {!(isReloading || isRedirecting) ? (
+      {!(isReloading || isRedirecting) && response ? (
         <>
           <PageButtonContext.Provider value={loadPage}>
             <MoviesList movieIds={getMovieIds()} />

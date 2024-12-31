@@ -1,3 +1,5 @@
+import { SetURLSearchParams } from "react-router-dom";
+
 async function fetchData({
  searchTitle,
   apiKey,
@@ -66,7 +68,10 @@ async function fetchMovieData(movieId: string, apiKey: string) {
   return data;
 }
 
-function setSearchParameters(paramsArray, setSearchParams) {
+function setSearchParameters(
+  paramsArray: { key: string; value: string }[],
+  setSearchParams: SetURLSearchParams
+) {
   setSearchParams((prev) => {
     paramsArray.forEach((element) => {
       if (element.value) {

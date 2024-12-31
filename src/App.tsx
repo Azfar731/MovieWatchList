@@ -1,6 +1,6 @@
 import "./App.css";
 import WatchList from "./pages/WatchList";
-import HomePage from "./pages/Homepage.tsx";
+import HomePage from "./pages/Homepage";
 
 import {
   RouterProvider,

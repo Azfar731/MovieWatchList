@@ -1,6 +1,6 @@
 import "./Header.css";
 import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
+
 type Params = {
   title: string;
   link: string;

@@ -185,8 +185,18 @@ export default function SearchResult() {
     }
   };
 
-  //if loader fetched new data
 
+  useEffect(() => {
+    totalSearchResults.current = totalResults;
+    const newArray = new Array(Number(totalSearchResults.current));
+    newArray.fill(undefined);
+    setMoviesArray(newArray);
+  }, [searchTitle]);
+
+
+
+
+  //if loader fetched new data
   useEffect(() => {
     if (response) {
       const startIndexForPageFetched = (pageFetched - 1) * 10;
@@ -197,11 +207,11 @@ export default function SearchResult() {
             startIndex: startIndexForPageFetched,
           });
           // setIsLoading(false); //new data has been fetched
-        } else {
-          if (moviesArray[startIndexForPageFetched] === undefined) {
-            //handle the case when no movies returned and array is also empty
-            console.log("NO movies returned and array is also empty");
-          }
+        }
+      } else {
+        if (moviesArray[startIndexForPageFetched] === undefined) {
+          //handle the case when no movies returned and array is also empty
+          console.log("NO movies returned and array is also empty");
         }
       }
     }
@@ -214,13 +224,7 @@ export default function SearchResult() {
     moviesArray,
   ]);
 
-  useEffect(() => {
-    totalSearchResults.current = totalResults;
-    const newArray = new Array(Number(totalSearchResults.current));
-    newArray.fill(undefined);
-    setMoviesArray(newArray);
-  }, [totalResults]);
-
+ 
   return (
     <>
       {!(isReloading || isRedirecting) ? (

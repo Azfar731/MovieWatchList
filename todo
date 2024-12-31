@@ -13,3 +13,8 @@ fix API key/ENV variablel issue in the project
 
 for later:
 Issue: If reload is pressed while loadData is set to false in the search params, the page gets stuck on loading data.
+
+
+Info to use in MovieDetails Page:
+- released
+- 

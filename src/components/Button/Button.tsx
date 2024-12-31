@@ -8,7 +8,7 @@ type Params = {
 } & Record<string, unknown>;
 
 export default function Button({ value, text, ...rest }: Params) {
-  const loadPage = useContext(PageButtonContext) as (value: number) => void;
+  const loadPage = useContext(PageButtonContext);
 
   return (
     <button {...rest} onClick={() => loadPage(value)}>

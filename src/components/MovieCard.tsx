@@ -7,20 +7,27 @@ import { FaStar } from "react-icons/fa6";
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { ThreeDots } from "react-loading-icons";
 import { MovieDetails } from "../utility/customTypes";
+import { useContext } from "react";
+import { WatchListContext } from "../pages/WatchList";
+import toast, { Toaster } from "react-hot-toast";
+import {
+  BiSolidBookmarkAltPlus,
+  BiSolidBookmarkAltMinus,
+} from "react-icons/bi";
+
 export default function MovieCard({ movieId }: { movieId: string }) {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
     undefined
   );
-  const[isInWatchList, setIsInWatchList] = useState(false);
-  
+  const [isInWatchList, setIsInWatchList] = useState(false);
+  const manageMovieIds = useContext(WatchListContext);
   useEffect(() => {
     const apiKey = import.meta.env.VITE_API_KEY;
     // setMovieDetails(fetchMovieData(movieId,apiKey));
     fetchMovieData(movieId, apiKey).then((data) => {
-      setMovieDetails(data)
+      setMovieDetails(data);
       setIsInWatchList(inWatchList(data.imdbID));
-    
-    } );
+    });
   }, [movieId]);
 
   function manageWatchlist() {
@@ -42,6 +49,10 @@ export default function MovieCard({ movieId }: { movieId: string }) {
         );
         localStorage.setItem("watchlist", JSON.stringify(newWatchListArray));
         setIsInWatchList(false);
+        manageMovieIds(movieDetails.imdbID);
+        toast("Movie removed from watchlist", {
+          icon: <BiSolidBookmarkAltMinus size={"2em"} color="red" />,
+        });
         return;
       }
     }
@@ -50,6 +61,9 @@ export default function MovieCard({ movieId }: { movieId: string }) {
     watchlistArray.push(movieDetails.imdbID);
     localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
     setIsInWatchList(true);
+    toast("Movie added to watchlist", {
+      icon: <BiSolidBookmarkAltPlus size={"2em"} color="green" />,
+    });
   }
 
   function inWatchList(imdbID: string) {
@@ -65,6 +79,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
 
   return movieDetails ? (
     <div className="movie-card">
+      <Toaster position="bottom-center" />
       <ImagePlaceholder
         src={movieDetails.Poster}
         alt={`Movie Poster of ${movieDetails.Title}`}

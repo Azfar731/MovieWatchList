@@ -17,6 +17,7 @@ import ButtonList from "../components/Button/ButtonList";
 import { TbDatabaseSearch } from "react-icons/tb";
 import { useNavigation } from "react-router-dom";
 import { MovieInList } from "../utility/customTypes";
+import { Riple } from "react-loading-indicators";
 export const PageButtonContext = createContext<(value: number) => void>(() => {
   console.warn("PageButtonContext.Provider is missing.");
 });
@@ -179,7 +180,7 @@ export default function SearchResult() {
         </div>
       );
     } else {
-      return <h1>Loading results</h1>;
+      return <Riple color="#c8d5c8" size="large" text="Fetching Movies" textColor="" />;
     }
   };
 
@@ -203,7 +204,7 @@ export default function SearchResult() {
   useEffect(() => {
     if (response) {
       const startIndexForPageFetched = (pageFetched - 1) * 10;
-      if (moviesFetched.length > 1) {
+      if (moviesFetched.length > 0) {
         if (moviesArray[startIndexForPageFetched] === undefined) {
           appendMovieSearchResults({
             moviesToAppend: moviesFetched,

@@ -31,7 +31,6 @@ function App() {
             index
             element={
               <PlaceHolder>
-                {" "}
                 <div className="flex-column-container">
                   <PiFilmReelFill className="icon" />
                   <h1>Start Exploring</h1>

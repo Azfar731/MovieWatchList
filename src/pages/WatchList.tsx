@@ -4,7 +4,8 @@ import Header from "../layout/Header";
 import MoviesList from "../components/MoviesList";
 import PlaceHolder from "../components/Placeholder";
 import { createContext } from "react";
-
+import Footer from "../layout/Footer";
+import { LuClipboardList } from "react-icons/lu";
 export const WatchListContext = createContext<(value: string) => void>(() => {
   console.warn("WatchListContext.Provider is missing.");
 });
@@ -39,9 +40,13 @@ export default function WatchList() {
         </WatchListContext.Provider>
       ) : (
         <PlaceHolder>
-          <h1>No movies in the watchlist</h1>
+          <div className="flex-column-container">
+            <LuClipboardList className="icon" />
+            <h1>WatchList is Empty</h1>
+          </div>
         </PlaceHolder>
       )}
+      <Footer />
     </>
   );
 }

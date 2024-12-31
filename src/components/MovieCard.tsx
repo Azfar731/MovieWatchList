@@ -117,6 +117,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
       />
       <div className="movie-info-placeholder">
         <ThreeDots stroke="#C7C6C0" />
+        {/* <ThreeDot color="#c9d6c9" size="medium" text="" textColor="" /> */}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import "./App.css";
-import HomePage from "./pages/Homepage";
 import WatchList from "./pages/WatchList";
+import HomePage from "./pages/Homepage.tsx";
+
 import {
   RouterProvider,
   createBrowserRouter,
@@ -10,7 +11,9 @@ import {
 import ErrorElement from "./ErrorPage/ErrorElement";
 import PlaceHolder from "./components/Placeholder";
 import { PiFilmReelFill } from "react-icons/pi";
-import SearchResult, {loader as SearchResultLoader} from "./pages/SearchResult";
+import SearchResult, {
+  loader as SearchResultLoader,
+} from "./pages/SearchResult";
 import MovieDetails from "./pages/MovieDetails";
 function App() {
   const browserRouter = createBrowserRouter(
@@ -39,7 +42,11 @@ function App() {
             }
           />
           <Route path="search">
-            <Route path=":searchTitle" element={<SearchResult />} loader={SearchResultLoader} />
+            <Route
+              path=":searchTitle"
+              element={<SearchResult />}
+              loader={SearchResultLoader}
+            />
             <Route path=":searchTitle/:id" element={<MovieDetails />} />
           </Route>
         </Route>

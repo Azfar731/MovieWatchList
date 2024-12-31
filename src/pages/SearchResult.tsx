@@ -85,14 +85,12 @@ export default function SearchResult() {
 
   const isReloading =
     navigation.state === "loading" &&
-    navigation.formData != null &&
     navigation.formAction ===
       navigation.location.pathname + navigation.location.search;
 
   // Are we redirecting after an action?
   const isRedirecting =
-    navigation.state === "loading" &&
-    navigation.formData != null &&
+    navigation.state === "loading"  &&
     navigation.formAction !==
       navigation.location.pathname + navigation.location.search;
 

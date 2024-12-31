@@ -1,9 +1,6 @@
 Current State:
-UseSearchResult is working fine.
-New Movies are being loaded if searched.
-Buttons are working
-Movies already in the array are not being displayed
-Loading Data prompt is not being displayed when a new page is fetched.
+Fix Wishlist functionality
+
 
 next:
 re-render movie card when a movie is added/removed from watchlist.

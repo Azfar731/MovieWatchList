@@ -63,9 +63,45 @@ async function fetchData({
 async function fetchMovieData(movieId: string, apiKey: string) {
   const baseURL = "https://www.omdbapi.com/";
   const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=short`;
-  const response = await fetch(targetUrl);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(targetUrl);
+    if (!response.ok) {
+      throw {
+        msg: "Failed to Fetch Response",
+        status: response.status,
+        manual: true,
+      };
+    }
+    const data = await response.json();
+    
+    if (data.code === 400) {
+      throw {
+        msg: "API RETURNED AN ERROR ",
+        status: data.code,
+        manual: true,
+      };
+    }
+    if(data.Response === "True"){
+    return {
+      response: true,
+      movieDetails: data,
+    }
+    }else{
+      return {
+        response: false,
+        movieDetails: {},
+      }
+    }
+    
+  } catch (err) {
+    if (err instanceof Error) {
+        throw {
+          msg: err.message,
+          status: 500,
+          manual: true,
+        };
+      }
+  }
 }
 
 function setSearchParameters(

@@ -1,0 +1,11 @@
+
+.movies-details-container {
+    width:50%;
+    min-width: 800px;
+    margin: auto;   
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+}

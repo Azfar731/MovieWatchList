@@ -14,6 +14,7 @@ import {
   BiSolidBookmarkAltPlus,
   BiSolidBookmarkAltMinus,
 } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 export default function MovieCard({ movieId }: { movieId: string }) {
   const [movieDetails, setMovieDetails] = useState<MovieDetails | undefined>(
@@ -25,8 +26,8 @@ export default function MovieCard({ movieId }: { movieId: string }) {
     const apiKey = import.meta.env.VITE_API_KEY;
     // setMovieDetails(fetchMovieData(movieId,apiKey));
     fetchMovieData(movieId, apiKey).then((data) => {
-      setMovieDetails(data);
-      setIsInWatchList(inWatchList(data.imdbID));
+      setMovieDetails(data?.movieDetails);
+      setIsInWatchList(inWatchList(data?.movieDetails.imdbID));
     });
   }, [movieId]);
 
@@ -80,15 +81,19 @@ export default function MovieCard({ movieId }: { movieId: string }) {
   return movieDetails ? (
     <div className="movie-card">
       <Toaster position="bottom-center" />
-      <ImagePlaceholder
-        src={movieDetails.Poster}
-        alt={`Movie Poster of ${movieDetails.Title}`}
-        placeholder="/placeholder.png"
-        className="movie-poster"
-      />
+      <Link to={movieDetails.imdbID} className="link-reset link-image">
+        <ImagePlaceholder
+          src={movieDetails.Poster}
+          alt={`Movie Poster of ${movieDetails.Title}`}
+          placeholder="/placeholder.png"
+          className="movie-poster"
+        />
+      </Link>
       <div className="movie-info">
         <div className="movie-title-container">
-          <h3 className="movie-title">{movieDetails.Title}</h3>
+          <Link to={movieDetails.imdbID} className="link-reset">
+            <h3 className="movie-title">{movieDetails.Title}</h3>
+          </Link>
           <div className="movie-rating">
             <FaStar className="rating-star" />
             <span className="rating-value">{movieDetails.imdbRating}</span>

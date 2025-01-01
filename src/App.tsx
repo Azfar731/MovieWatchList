@@ -14,7 +14,7 @@ import { PiFilmReelFill } from "react-icons/pi";
 import SearchResult, {
   loader as SearchResultLoader,
 } from "./pages/SearchResult";
-import MovieDetails from "./pages/MovieDetails";
+import MovieDetails, {loader as MovieDetailsLoader} from "./pages/MovieDetails";
 function App() {
   const browserRouter = createBrowserRouter(
     createRoutesFromElements(
@@ -47,7 +47,7 @@ function App() {
               element={<SearchResult />}
               loader={SearchResultLoader}
             />
-            <Route path=":searchTitle/:id" element={<MovieDetails />} />
+            <Route path=":searchTitle/:id" element={<MovieDetails />} loader={MovieDetailsLoader} />
           </Route>
         </Route>
         <Route

@@ -6,6 +6,9 @@ type MovieDetails = {
   Genre: string;
   Plot: string;
   imdbID: string;
+  Director: string;
+  Actors: string;
+  
 } & Record<string, string>;
 
 type MovieInList = {

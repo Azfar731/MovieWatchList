@@ -1,3 +1,4 @@
+import "./MovieDetails.css"
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { fetchMovieData } from "../utility/utilityFunctions";
 import type { MovieDetails } from "../utility/customTypes";
@@ -14,7 +15,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (!id) {
     throw Error("No movie id provided in the URL");
   }
-  const fetchedData = await fetchMovieData(id, apiKey);
+  const fetchedData = await fetchMovieData(id, apiKey, "full");
   return {
     response: fetchedData?.response,
     movieData: fetchedData?.movieDetails,
@@ -60,14 +61,38 @@ export default function MovieDetails() {
     );
   };
 
+  const renderMovieGenres = (genres_list: string) => {
+    return genres_list.split(",").map((genre, index) => (
+      <div key={index} className="movie-genre">
+        {genre}
+      </div>
+    ))
+  }
+
+
   return response ? (
-    <div className="movie-details-container">
-      <img src={movieData.Poster} alt="Movie Poster" />
-      <div>
-        <h1>{movieData.Title}</h1>
+    <div className="movie-page-container">
+      <div className="movie-page-poster-title-container">
+        <img src={movieData.Poster} alt="Movie Poster" />
         <div>
-          <p>{`${movieData.imdbRating}/10`}</p>
-          {renderRatingStars()}
+          <h1>{movieData.Title}</h1>
+          <div>
+            <p>{`${movieData.imdbRating}/10`}</p>
+            {renderRatingStars()}
+          </div>
+        </div>
+      </div>
+      <div className="movie-page-genres-container">
+        {renderMovieGenres(movieData.Genre)}
+      </div>
+      <div className= "movie-page-details-container">
+        <div className="movie-details">
+          <p>Duration: {movieData.Runtime}</p>
+          <p>Director: {movieData.Director}</p>
+          <p>Cast: {movieData.Actors}</p>
+        </div>
+        <div className="movie-plot-container">
+          <p>{movieData.Plot}</p>
         </div>
       </div>
     </div>

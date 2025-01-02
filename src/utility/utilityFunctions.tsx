@@ -60,9 +60,9 @@ async function fetchData({
   }
 }
 
-async function fetchMovieData(movieId: string, apiKey: string) {
+async function fetchMovieData(movieId: string, apiKey: string, plot: "short" | "full" = "short") {
   const baseURL = "https://www.omdbapi.com/";
-  const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=short`;
+  const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=${plot}`;
   try {
     const response = await fetch(targetUrl);
     if (!response.ok) {

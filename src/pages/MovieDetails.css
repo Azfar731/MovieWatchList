@@ -1,22 +1,99 @@
-
 .movie-page-container {
-    width:50%;
-    min-width: 800px;
-    margin: auto;   
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-
+  width: 50%;
+  min-width: 800px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  padding-top: 40px;
+  padding-bottom: 20px;
 }
 
-.movie-details-poster-title-container{
-    display: flex;
-    align-items: center;
+.movie-page-poster {
+  max-width: 40%;
+
+  height: 100%;
+  margin-right: 20px;
+}
+
+.movie-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.movie-details-container h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.movie-details-rating {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #292929;
+}
+
+.movie-page-genres-container {
+  display: flex;
+  gap: 10px;
+}
+
+.movie-genre {
+  background-color: #e4e2e2;
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.movie-info-container {
+  color: #292929;
+  font-size: 0.9rem;
+}
+.movie-plot-container p {
+  font-size: 1.1rem; /* Slightly larger font for better readability */
+  line-height: 1.4; /* Adds spacing between lines for easier reading */
+  color: #292929; /* Soft dark gray for less harsh text */
+  font-family: "Arial", sans-serif; /* Clean and readable font */
+  text-align: justify; /* Justify the text for a clean alignment */
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #e4e2e2;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.movie-page-button {
+  width: 200px;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
     justify-content: center;
-    margin-top: 20px;
+  border: none;
+  cursor: pointer;
 }
 
-.movie-details-genres-container{
+.add-to-wishlist-button {
+  background-color: rgb(0, 95, 0);
+}
 
+.remove-from-wishlist-button {
+  background-color: red;
+}
+
+.add-to-wishlist-button:hover {
+  background-color: rgb(0, 71, 0);
+  cursor: pointer;
+}
+
+.remove-from-wishlist-button:hover {
+  background-color: rgb(172, 2, 2);
+  cursor: pointer;
+}
+
+.movie-page-button-icon {
+  margin-left: 5px;
 }

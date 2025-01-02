@@ -35,6 +35,7 @@ export default function MovieDetails() {
     movieData: MovieDetails;
   };
 
+  // Initialize state based on localStorage
   const [isInWatchList, setIsInWatchList] = useState<boolean>(() => {
     const watchlistString = localStorage.getItem("watchlist");
     if (watchlistString) {
@@ -48,6 +49,7 @@ export default function MovieDetails() {
     height: "1.5rem",
     width: "1.5rem",
   };
+
   const renderRatingStars = () => {
     const rating = Math.floor(Number(movieData.imdbRating));
     if (isNaN(rating)) {
@@ -63,17 +65,13 @@ export default function MovieDetails() {
     const fullStars = Math.floor(rating / 2);
     const halfStars = rating % 2;
     const emptyStars = totalStars - (fullStars + halfStars);
-    console.log("rating: ", rating);
-    console.log("fullStars: ", fullStars);
-    console.log("halfStars: ", halfStars);
-    console.log("emptyStars: ", emptyStars);
+
     return (
       <div>
         {[...Array(fullStars)].map((_, index) => (
           <MdOutlineStar key={index} style={star_icon_style} />
         ))}
         {halfStars === 0 ? null : <MdOutlineStarHalf style={star_icon_style} />}
-
         {[...Array(emptyStars)].map((_, index) => (
           <MdOutlineStarOutline key={index} style={star_icon_style} />
         ))}
@@ -89,14 +87,14 @@ export default function MovieDetails() {
     ));
   };
 
-  //write a function to add/remove movie from the watchlist
+  // Add/remove movie from the watchlist
   function manageWatchlist() {
     let watchlistArray: string[] = [];
     const watchlistString = localStorage.getItem("watchlist");
 
     if (watchlistString) {
       watchlistArray = JSON.parse(watchlistString);
-      //case for removal
+      // Case for removal
       if (watchlistArray.includes(movieData.imdbID)) {
         const newWatchListArray = watchlistArray.filter(
           (movieId) => movieId !== movieData.imdbID
@@ -110,7 +108,7 @@ export default function MovieDetails() {
       }
     }
 
-    //case for addition
+    // Case for addition
     watchlistArray.push(movieData.imdbID);
     localStorage.setItem("watchlist", JSON.stringify(watchlistArray));
     setIsInWatchList(true);
@@ -119,23 +117,32 @@ export default function MovieDetails() {
     });
   }
 
+  // Listen for storage changes
   useEffect(() => {
-    //function to check whether the movie is in watchlist.
-    const intervalId = setInterval(() => {
+    const checkWatchlist = () => {
       const watchlistString = localStorage.getItem("watchlist");
       if (watchlistString) {
         const found = JSON.parse(watchlistString).includes(movieData.imdbID);
-        console.log("found: ", found);
-        console.log("isInWatchList: ", isInWatchList);
-        if (found !== isInWatchList) {
-          console.log("Setting isInWatchList to: ", found);
-          setIsInWatchList(found);
-        }
+        setIsInWatchList(found);
       }
-    }, 10000);
+    };
 
-    return () => clearInterval(intervalId);
-  }, []);
+    // Check localStorage on mount
+    checkWatchlist();
+
+    // Add storage event listener
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "watchlist") {
+        checkWatchlist();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [movieData.imdbID]);
 
   return response ? (
     <div className="movie-page-container">
@@ -193,6 +200,6 @@ export default function MovieDetails() {
       </div>
     </div>
   ) : (
-    <PlaceHolder>Couldln't Fetch Movie Details</PlaceHolder>
+    <PlaceHolder>Couldn't Fetch Movie Details</PlaceHolder>
   );
 }

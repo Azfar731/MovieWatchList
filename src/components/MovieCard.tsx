@@ -78,6 +78,32 @@ export default function MovieCard({ movieId }: { movieId: string }) {
     return false;
   }
 
+  useEffect(() => {
+    const checkWatchlist = () => {
+      const watchlistString = localStorage.getItem("watchlist");
+      if (watchlistString) {
+        const found = JSON.parse(watchlistString).includes(movieDetails?.imdbID);
+        setIsInWatchList(found);
+      }
+    };
+
+    // Check localStorage on mount
+    checkWatchlist();
+
+    // Add storage event listener
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "watchlist") {
+        checkWatchlist();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [movieDetails?.imdbID]);
+
   return movieDetails ? (
     <div className="movie-card">
       <Toaster position="bottom-center" />
@@ -100,8 +126,8 @@ export default function MovieCard({ movieId }: { movieId: string }) {
           </div>
         </div>
         <div className="movie-meta">
-          <span className="movie-duration">{movieDetails.Runtime}</span>
-          <span className="movie-genre">{movieDetails.Genre}</span>
+          <span >{movieDetails.Runtime}</span>
+          <span >{movieDetails.Genre}</span>
           <div className="watchlist" onClick={manageWatchlist}>
             {isInWatchList ? (
               <FaMinusCircle className="add-icon" />

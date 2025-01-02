@@ -1,19 +1,10 @@
-Current State:
-Create Movie Details Page
 
-next:
-re-render movie card when a movie is added/removed from watchlist.
-complete wishlist functionality
-fix entire page reloading when a get request is made.
-construct a card for a single movie.
-add a footer to the project
+Things left to do:
 find a good cover for the header
 fix API key/ENV variablel issue in the project
+add a placeholder image in movieDetails Page.
+Create a Readme
+Add a path for /watchlist/movie-id. Maybe rename, /search/:search-title/:id to /movies/:id. So it can be used for both search page and watchlsit.
 
-for later:
-Issue: If reload is pressed while loadData is set to false in the search params, the page gets stuck on loading data.
-
-Info to use in MovieDetails Page:
-
-- released
--
+For later:
+Add suspense and use deferredData

@@ -24,11 +24,29 @@ export default function WatchList() {
   };
 
   useEffect(() => {
-    const watchlistString = localStorage.getItem("watchlist");
-    if (watchlistString) {
-      const watchlistArray = JSON.parse(watchlistString);
-      setMovieIds(watchlistArray);
-    }
+    const checkWatchlist = () => {
+      const watchlistString = localStorage.getItem("watchlist");
+      if (watchlistString) {
+        const watchlistArray = JSON.parse(watchlistString);
+        setMovieIds(watchlistArray);
+      }
+    };
+
+    // Check localStorage on mount
+    checkWatchlist();
+
+    // Add storage event listener
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "watchlist") {
+        checkWatchlist();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (

@@ -114,7 +114,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
         <ImagePlaceholder
           src={movieDetails.Poster}
           alt={`Movie Poster of ${movieDetails.Title}`}
-          placeholder="/placeholder.png"
+          placeholder="/placeholder.webp"
           className="movie-poster"
         />
       </Link>

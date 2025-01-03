@@ -19,7 +19,7 @@ header {
   }
   
   header::after {    
-    background-image: url("/src/assets/bg.png");
+    background-image: url("/cover2.webp");
     content: "";
     background-size: cover;
     background-size: 50%;

@@ -1,19 +1,28 @@
-import "./ImagePlaceholder.css"
+import "./ImagePlaceholder.css";
 import { useState } from "react";
 
-export default function ImagePlaceholder({src, placeholder, alt, ...rest }: {src: string; placeholder: string; alt:string; [key: string]: any}){
-
-    const [isLoaded, setIsLoaded] = useState(false);
+export default function ImagePlaceholder({
+  src,
+  placeholder,
+  alt,
+  ...rest
+}: {
+  src: string;
+  placeholder: string;
+  alt: string;
+  [key: string]: any;
+}) {
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div style={{width:"100%"}}>
+    <div style={{ width: "100%" }}>
       {/* Placeholder image */}
       {!isLoaded && (
         <img
           src={placeholder}
           alt="placeholder"
           {...rest}
-          style={{objectFit: "fill"}}
+          style={{ objectFit: "fill" }}
         />
       )}
 
@@ -23,9 +32,12 @@ export default function ImagePlaceholder({src, placeholder, alt, ...rest }: {src
         alt={alt}
         onLoad={() => setIsLoaded(true)}
         {...rest}
-        style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', objectFit: "cover" }}
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: "opacity 0.5s ease-in-out",
+          objectFit: "cover",
+        }}
       />
     </div>
   );
-};
-
+}

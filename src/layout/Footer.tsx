@@ -7,7 +7,7 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer-container">
                 <div className="footer-text">
-                    <p>&copy; {new Date().getFullYear()} Azfar Razzaq. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Azfar Razzaq. Licensed under the MIT License.</p>
                 </div>
                 <div className="footer-links">
                     <a

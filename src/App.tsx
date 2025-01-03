@@ -47,8 +47,8 @@ function App() {
               element={<SearchResult />}
               loader={SearchResultLoader}
             />
-            <Route path=":searchTitle/:id" element={<MovieDetails />} loader={MovieDetailsLoader} />
           </Route>
+            <Route path="movies/:id" element={<MovieDetails />} loader={MovieDetailsLoader} />
         </Route>
         <Route
           path="/watch-list"

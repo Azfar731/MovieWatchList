@@ -22,6 +22,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
   );
   const [isInWatchList, setIsInWatchList] = useState(false);
   const manageMovieIds = useContext(WatchListContext);
+  const movieDetailsPageURL = `/movies/${movieDetails?.imdbID}`;
   useEffect(() => {
     const apiKey = import.meta.env.VITE_API_KEY;
     // setMovieDetails(fetchMovieData(movieId,apiKey));
@@ -107,7 +108,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
   return movieDetails ? (
     <div className="movie-card">
       <Toaster position="bottom-center" />
-      <Link to={movieDetails.imdbID} className="link-reset link-image">
+      <Link to={movieDetailsPageURL} className="link-reset link-image">
         <ImagePlaceholder
           src={movieDetails.Poster}
           alt={`Movie Poster of ${movieDetails.Title}`}
@@ -117,7 +118,7 @@ export default function MovieCard({ movieId }: { movieId: string }) {
       </Link>
       <div className="movie-info">
         <div className="movie-title-container">
-          <Link to={movieDetails.imdbID} className="link-reset">
+          <Link to={movieDetailsPageURL} className="link-reset">
             <h3 className="movie-title">{movieDetails.Title}</h3>
           </Link>
           <div className="movie-rating">

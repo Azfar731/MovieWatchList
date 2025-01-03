@@ -1,19 +1,19 @@
 import { SetURLSearchParams } from "react-router-dom";
 
 async function fetchData({
- searchTitle,
-  apiKey,
+  searchTitle,
+
   pageNumber,
   moviesPerPage,
 }: {
   searchTitle: string;
-  apiKey: string;
+
   pageNumber: number;
   moviesPerPage: number;
 }) {
   const baseURL = "https://www.omdbapi.com/";
   const pageToFetch = Math.ceil((pageNumber * moviesPerPage) / 10);
-  const targetUrl = `${baseURL}?apikey=${apiKey}&s=${searchTitle}&type=movie&page=${pageToFetch}`;
+  const targetUrl = `${baseURL}?apikey=${import.meta.env.VITE_API_KEY}&s=${searchTitle}&type=movie&page=${pageToFetch}`;
   try {
     const response = await fetch(targetUrl);
     if (!response.ok) {
@@ -24,7 +24,7 @@ async function fetchData({
       };
     }
     const data = await response.json();
-    
+
     if (data.code === 400) {
       throw {
         msg: "API RETURNED AN ERROR ",
@@ -51,18 +51,23 @@ async function fetchData({
     }
   } catch (err) {
     if (err instanceof Error) {
-        throw {
-          msg: err.message,
-          status: 500,
-          manual: true,
-        };
-      }
+      throw {
+        msg: err.message,
+        status: 500,
+        manual: true,
+      };
+    }
   }
 }
 
-async function fetchMovieData(movieId: string, apiKey: string, plot: "short" | "full" = "short") {
+async function fetchMovieData(
+  movieId: string,
+  plot: "short" | "full" = "short"
+) {
   const baseURL = "https://www.omdbapi.com/";
-  const targetUrl = `${baseURL}?apikey=${apiKey}&i=${movieId}&plot=${plot}`;
+  const targetUrl = `${baseURL}?apikey=${
+    import.meta.env.VITE_API_KEY
+  }&i=${movieId}&plot=${plot}`;
   try {
     const response = await fetch(targetUrl);
     if (!response.ok) {
@@ -73,7 +78,7 @@ async function fetchMovieData(movieId: string, apiKey: string, plot: "short" | "
       };
     }
     const data = await response.json();
-    
+
     if (data.code === 400) {
       throw {
         msg: "API RETURNED AN ERROR ",
@@ -81,26 +86,25 @@ async function fetchMovieData(movieId: string, apiKey: string, plot: "short" | "
         manual: true,
       };
     }
-    if(data.Response === "True"){
-    return {
-      response: true,
-      movieDetails: data,
-    }
-    }else{
+    if (data.Response === "True") {
+      return {
+        response: true,
+        movieDetails: data,
+      };
+    } else {
       return {
         response: false,
         movieDetails: {},
-      }
+      };
     }
-    
   } catch (err) {
     if (err instanceof Error) {
-        throw {
-          msg: err.message,
-          status: 500,
-          manual: true,
-        };
-      }
+      throw {
+        msg: err.message,
+        status: 500,
+        manual: true,
+      };
+    }
   }
 }
 

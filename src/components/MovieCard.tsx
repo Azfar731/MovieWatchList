@@ -83,7 +83,9 @@ export default function MovieCard({ movieId }: { movieId: string }) {
     const checkWatchlist = () => {
       const watchlistString = localStorage.getItem("watchlist");
       if (watchlistString) {
-        const found = JSON.parse(watchlistString).includes(movieDetails?.imdbID);
+        const found = JSON.parse(watchlistString).includes(
+          movieDetails?.imdbID
+        );
         setIsInWatchList(found);
       }
     };
@@ -121,14 +123,18 @@ export default function MovieCard({ movieId }: { movieId: string }) {
           <Link to={movieDetailsPageURL} className="link-reset">
             <h3 className="movie-title">{movieDetails.Title}</h3>
           </Link>
-          <div className="movie-rating">
-            <FaStar className="rating-star" />
-            <span className="rating-value">{movieDetails.imdbRating}</span>
-          </div>
+          {movieDetails.imdbRating !== "N/A" && (
+            <div className="movie-rating">
+              <FaStar className="rating-star" />
+              <span className="rating-value">{movieDetails.imdbRating}</span>
+            </div>
+          )}
         </div>
         <div className="movie-meta">
-          <span >{movieDetails.Runtime}</span>
-          <span >{movieDetails.Genre}</span>
+          {movieDetails.Runtime !== "N/A" && (
+            <span>{movieDetails.Runtime}</span>
+          )}
+          {movieDetails.Genre !== "N/A" && <span>{movieDetails.Genre}</span>}
           <div className="watchlist" onClick={manageWatchlist}>
             {isInWatchList ? (
               <FaMinusCircle className="add-icon" />
@@ -137,7 +143,11 @@ export default function MovieCard({ movieId }: { movieId: string }) {
             )}
           </div>
         </div>
-        <p className="movie-description">{movieDetails.Plot}</p>
+        <p className="movie-description">
+          {movieDetails.Plot !== "N/A"
+            ? movieDetails.Plot
+            : "Plot not available"}
+        </p>
       </div>
     </div>
   ) : (

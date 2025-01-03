@@ -81,9 +81,13 @@ export default function MovieDetails() {
   };
 
   const renderMovieGenres = (genres_list: string) => {
-    return genres_list.split(",").map((genre, index) => (
+    const genresArray = genres_list.split(",");
+    if (genresArray[0] === "N/A") {
+      return null;
+    }
+    return genresArray.map((genre, index) => (
       <div key={index} className="movie-genre">
-        {genre}
+      {genre}
       </div>
     ));
   };
@@ -148,11 +152,6 @@ export default function MovieDetails() {
   return response ? (
     <div className="movie-page-container">
       <Toaster position="bottom-center" />
-      {/* <img
-        src={movieData.Poster}
-        alt="Movie Poster"
-        className="movie-page-poster"
-      /> */}
       <div className="movie-page-poster">
         <ImagePlaceholder
           src={movieData.Poster}
@@ -166,7 +165,7 @@ export default function MovieDetails() {
           <h1>{movieData.Title}</h1>
         </div>
         <div>
-          <p className="movie-details-rating">{`${movieData.imdbRating}/10`}</p>
+          <p className="movie-details-rating">{movieData.imdbRating !== "N/A"?`${movieData.imdbRating}/10`: "Rating not Available"}</p>
           {renderRatingStars()}
         </div>
         <button
@@ -204,7 +203,7 @@ export default function MovieDetails() {
           </p>
         </div>
         <div className="movie-plot-container">
-          <p>{movieData.Plot}</p>
+          <p>{movieData.Plot !== "N/A"? movieData.Plot : "No plot provided"}</p>
         </div>
       </div>
     </div>

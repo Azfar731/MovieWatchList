@@ -15,6 +15,7 @@ import {
   BiSolidBookmarkAltPlus,
   BiSolidBookmarkAltMinus,
 } from "react-icons/bi";
+import ImagePlaceholder from "../components/ImagePlaceholder";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -147,11 +148,19 @@ export default function MovieDetails() {
   return response ? (
     <div className="movie-page-container">
       <Toaster position="bottom-center" />
-      <img
+      {/* <img
         src={movieData.Poster}
         alt="Movie Poster"
         className="movie-page-poster"
-      />
+      /> */}
+      <div className="movie-page-poster">
+        <ImagePlaceholder
+          src={movieData.Poster}
+          placeholder="https://placehold.co/300x450?text=No+Poster+Available"
+          alt="Movie Poster"
+          // className="movie-page-poster"
+        />
+      </div>
       <div className="movie-details-container">
         <div className="movie-title-container">
           <h1>{movieData.Title}</h1>

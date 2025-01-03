@@ -6,7 +6,7 @@ export default function ImagePlaceholder({src, placeholder, alt, ...rest }: {src
     const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div style={{maxWidth:"100%"}}>
+    <div style={{width:"100%"}}>
       {/* Placeholder image */}
       {!isLoaded && (
         <img

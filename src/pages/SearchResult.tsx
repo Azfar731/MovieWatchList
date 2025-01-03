@@ -1,4 +1,4 @@
-import { useState, createContext, useEffect, useRef } from "react";
+import { useState, createContext, useEffect } from "react";
 import "./SearchResult.css";
 import {
   fetchData,
@@ -62,8 +62,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export default function SearchResult() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [moviesArray, setMoviesArray] = useState<MovieInList[]>([]);
-  // const [totalSearchResults, setTotalSearchResults] = useState(0); //set to reference
-  const totalSearchResults = useRef(0);
+  const [totalSearchResults, setTotalSearchResults] = useState(0); //set to reference
+  // const totalSearchResults = useRef(0);
   // const [isLoading, setIsLoading] = useState(true);
   const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const moviesPerPage = 10;
@@ -187,8 +187,8 @@ export default function SearchResult() {
     if(totalResults === 0) {
       return
     }
-    totalSearchResults.current = totalResults;
-    const newArray = new Array(Number(totalSearchResults.current));
+    setTotalSearchResults(totalResults);
+    const newArray = new Array(Number(totalResults));
     newArray.fill(undefined);
     setMoviesArray(newArray);
   }, [searchTitle, totalResults]);
@@ -234,7 +234,7 @@ export default function SearchResult() {
           <PageButtonContext.Provider value={loadPage}>
             <MoviesList movieIds={getMovieIds()} />
             <ButtonList
-              totalResults={totalSearchResults.current}
+              totalResults={totalSearchResults}
               resultsPerPage={moviesPerPage}
               currentPage={pageNumber}
             />

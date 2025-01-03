@@ -29,6 +29,40 @@ export async function loader({ params }: LoaderFunctionArgs) {
   };
 }
 
+const RenderRatingStars = ({imdbRating}:{imdbRating: string}) => {
+  const star_icon_style = {
+    color: "gold",
+    height: "1.5rem",
+    width: "1.5rem",
+  };
+  const rating = Math.floor(Number(imdbRating));
+  if (isNaN(rating)) {
+    return (
+      <div>
+        {[...Array(5)].map((_, index) => (
+          <MdOutlineStarOutline key={index} style={star_icon_style} />
+        ))}
+      </div>
+    );
+  }
+  const totalStars = 5;
+  const fullStars = Math.floor(rating / 2);
+  const halfStars = rating % 2;
+  const emptyStars = totalStars - (fullStars + halfStars);
+
+  return (
+    <div>
+      {[...Array(fullStars)].map((_, index) => (
+        <MdOutlineStar key={index} style={star_icon_style} />
+      ))}
+      {halfStars === 0 ? null : <MdOutlineStarHalf style={star_icon_style} />}
+      {[...Array(emptyStars)].map((_, index) => (
+        <MdOutlineStarOutline key={index} style={star_icon_style} />
+      ))}
+    </div>
+  );
+};
+
 export default function MovieDetails() {
   const { response, movieData } = useLoaderData() as {
     response: boolean;
@@ -44,41 +78,7 @@ export default function MovieDetails() {
     return false;
   });
 
-  const star_icon_style = {
-    color: "gold",
-    height: "1.5rem",
-    width: "1.5rem",
-  };
-
-  const renderRatingStars = () => {
-    const rating = Math.floor(Number(movieData.imdbRating));
-    if (isNaN(rating)) {
-      return (
-        <div>
-          {[...Array(5)].map((_, index) => (
-            <MdOutlineStarOutline key={index} style={star_icon_style} />
-          ))}
-        </div>
-      );
-    }
-    const totalStars = 5;
-    const fullStars = Math.floor(rating / 2);
-    const halfStars = rating % 2;
-    const emptyStars = totalStars - (fullStars + halfStars);
-
-    return (
-      <div>
-        {[...Array(fullStars)].map((_, index) => (
-          <MdOutlineStar key={index} style={star_icon_style} />
-        ))}
-        {halfStars === 0 ? null : <MdOutlineStarHalf style={star_icon_style} />}
-        {[...Array(emptyStars)].map((_, index) => (
-          <MdOutlineStarOutline key={index} style={star_icon_style} />
-        ))}
-      </div>
-    );
-  };
-
+  
   const renderMovieGenres = (genres_list: string) => {
     const genresArray = genres_list.split(",");
     if (genresArray[0] === "N/A") {
@@ -169,7 +169,7 @@ export default function MovieDetails() {
               ? `${movieData.imdbRating}/10`
               : "Rating not Available"}
           </p>
-          {renderRatingStars()}
+          <RenderRatingStars imdbRating={movieData.imdbRating}/>
         </div>
         <button
           className={

@@ -35,7 +35,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   if (loadData === "true") {
     const data = await fetchData({
       searchTitle,
-      apiKey,
+      
       pageNumber: Number(pageNumber),
       moviesPerPage: Number(moviesPerPage),
     });

@@ -24,9 +24,9 @@ export default function MovieCard({ movieId }: { movieId: string }) {
   const manageMovieIds = useContext(WatchListContext);
   const movieDetailsPageURL = `/movies/${movieDetails?.imdbID}`;
   useEffect(() => {
-    const apiKey = import.meta.env.VITE_API_KEY;
+    
     // setMovieDetails(fetchMovieData(movieId,apiKey));
-    fetchMovieData(movieId, apiKey).then((data) => {
+    fetchMovieData(movieId).then((data) => {
       setMovieDetails(data?.movieDetails);
       setIsInWatchList(inWatchList(data?.movieDetails.imdbID));
     });

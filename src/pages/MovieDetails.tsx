@@ -18,12 +18,11 @@ import {
 import ImagePlaceholder from "../components/ImagePlaceholder";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const apiKey = import.meta.env.VITE_API_KEY;
   const { id } = params;
   if (!id) {
     throw Error("No movie id provided in the URL");
   }
-  const fetchedData = await fetchMovieData(id, apiKey, "full");
+  const fetchedData = await fetchMovieData(id, "full");
   return {
     response: fetchedData?.response,
     movieData: fetchedData?.movieDetails,
@@ -87,7 +86,7 @@ export default function MovieDetails() {
     }
     return genresArray.map((genre, index) => (
       <div key={index} className="movie-genre">
-      {genre}
+        {genre}
       </div>
     ));
   };
@@ -165,7 +164,11 @@ export default function MovieDetails() {
           <h1>{movieData.Title}</h1>
         </div>
         <div>
-          <p className="movie-details-rating">{movieData.imdbRating !== "N/A"?`${movieData.imdbRating}/10`: "Rating not Available"}</p>
+          <p className="movie-details-rating">
+            {movieData.imdbRating !== "N/A"
+              ? `${movieData.imdbRating}/10`
+              : "Rating not Available"}
+          </p>
           {renderRatingStars()}
         </div>
         <button
@@ -203,7 +206,9 @@ export default function MovieDetails() {
           </p>
         </div>
         <div className="movie-plot-container">
-          <p>{movieData.Plot !== "N/A"? movieData.Plot : "No plot provided"}</p>
+          <p>
+            {movieData.Plot !== "N/A" ? movieData.Plot : "No plot provided"}
+          </p>
         </div>
       </div>
     </div>

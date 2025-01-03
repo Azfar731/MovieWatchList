@@ -23,7 +23,7 @@ export const PageButtonContext = createContext<(value: number) => void>(() => {
 });
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-  const apiKey = "dd2dead5";
+  const apiKey = import.meta.env.VITE_API_KEY;
   if (!apiKey) {
     throw new Error("API key not found. Register on OMDB to get an API Key");
   }

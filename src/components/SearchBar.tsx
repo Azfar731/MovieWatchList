@@ -1,9 +1,22 @@
 import "./SearchBar.css";
 import { Form } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useNavigation } from "react-router-dom";
 export default function SearchBar() {
   const navigate = useNavigate();
+  const navigation = useNavigation();
+
+  const isReloading =
+    navigation.state === "loading" &&
+    navigation.formAction ===
+      navigation.location.pathname + navigation.location.search;
+
+  // Are we redirecting after an action?
+  const isRedirecting =
+    navigation.state === "loading" &&
+    navigation.formAction !==
+      navigation.location.pathname + navigation.location.search;
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -25,7 +38,7 @@ export default function SearchBar() {
           className="form-input"
         />
       </div>
-      <button className="form-btn">Search</button>
+      <button className="form-btn" disabled={isReloading || isRedirecting}>Search</button>
     </Form>
   );
 }

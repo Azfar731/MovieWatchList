@@ -40,10 +40,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       moviesPerPage: Number(moviesPerPage),
     });
     if (!data) {
-      console.log("no data fetched");
+     
       throw new Error("No data fetched");
     }
-    console.log("loaderData; ", data);
+    
     return data;
   } else {
     const previousPageFetched = Math.ceil(
@@ -75,7 +75,7 @@ export default function SearchResult() {
     pageFetched: number;
   };
 
-  console.log(loaderData);
+  
   const { response, searchTitle, moviesFetched, totalResults, pageFetched } =
     loaderData;
   const navigation = useNavigation();
@@ -211,7 +211,6 @@ export default function SearchResult() {
       } else {
         if (moviesArray[startIndexForPageFetched] === undefined) {
           //handle the case when no movies returned and array is also empty
-          console.log("NO movies returned and array is also empty");
           setSearchParameters([{ key: "loadData", value: "true"}], setSearchParams);
         }
       }

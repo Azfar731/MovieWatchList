@@ -1,8 +1,7 @@
 import "./ErrorElement.css";
 import {
   useRouteError,
-  Link,
-  isRouteErrorResponse,
+  Link
 } from "react-router-dom";
 
 type ErrorType =  {msg: "string"; status: number | string; manual:boolean}
@@ -10,11 +9,8 @@ type ErrorType =  {msg: "string"; status: number | string; manual:boolean}
 export default function ErrorElement({ width= "100%", height= "100%", backgroundColor="white", links=[{path:"/",text:"Go to Homepage"}]}) {
  
   const error: ErrorType | string = useRouteError() as ErrorType;
-  console.log("Error:", error);
+ 
 
-  if (isRouteErrorResponse(error)) {
-    console.log("isRouteErrorResponse is true");
-  }
 
   let msg,status
 
@@ -31,7 +27,7 @@ export default function ErrorElement({ width= "100%", height= "100%", background
     return <Link to={link.path} className="error-btn">{link.text}</Link>
   });
 
-  console.log(buttonArray)
+  
 
 
   return (

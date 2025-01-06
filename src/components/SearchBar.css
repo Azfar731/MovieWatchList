@@ -52,8 +52,14 @@
     box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+.form-btn:disabled {
+    cursor: not-allowed; /* Show a "not-allowed" cursor */
+    background-color: #E5E7EB; /* Optional: lighter background color */
+    color: #9CA3AF; /* Optional: lighter text color */
+}
+
 .search-icon{
-    color: grey;
+    color: rgb(179, 178, 178);
     width: 7%;
 
 }

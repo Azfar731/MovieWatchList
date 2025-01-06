@@ -1,7 +1,7 @@
 # MovieWatchList
 
 MovieWatchList is a React application that allows users to search movies by providing a title and manage a list of movies they want to watch.
-
+This project is live at: https://moviefinderproject.netlify.app/
 ![Screenshot](screenshot.PNG)
 
 ## Features
